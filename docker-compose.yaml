@@ -1,0 +1,67 @@
+version: '3.8'
+
+networks:
+  nwtis:
+    name: nwtis
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 20.24.5.0/24
+          gateway: 20.24.5.1
+
+volumes:
+  h2nwtis:
+    external: true
+
+services:
+  nwtis_h2:
+    image: nwtis_h2_dz_2i:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.h2
+    networks:
+      nwtis:
+        ipv4_address: 20.24.5.4
+    volumes:
+      - h2nwtis:/opt/database
+    container_name: nwtis_h2_dz_2c
+    hostname: nwtis_h2_dz_2c
+    entrypoint: ["/docker-entrypoint.sh"]
+    command: ["h2"]
+
+  nwtis_mikroservisi:
+    image: nwtis_mikroservisi_dz_2i:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.mikroservisi
+    networks:
+      nwtis:
+        ipv4_address: 20.24.5.5
+    container_name: nwtis_mikroservisi_dz_2c
+    hostname: nwtis_mikroservisi_dz_2c
+    entrypoint: ["/docker-entrypoint.sh"]
+    command: ["start"]
+
+  nwtis_app:
+    image: nwtis_app_dz_2i:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.app
+    networks:
+      nwtis:
+        ipv4_address: 20.24.5.2
+    container_name: nwtis_app_dz_2c
+    hostname: nwtis_app_dz_2c
+    entrypoint: ["/docker-entrypoint.sh"]
+    command: ["start"]
+    depends_on:
+      - nwtis_h2
+      - nwtis_mikroservisi
+    
+
+  
+    
+    
+  
+
+  

@@ -1,0 +1,10 @@
+FROM payara/server-full
+
+COPY ./target /usr/servisi/
+COPY ./docker-entrypoint.servisi.sh /docker-entrypoint.sh
+WORKDIR /usr/servisi
+RUN chmod -R 777 /docker-entrypoint.sh
+
+EXPOSE 8080
+ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["start"]

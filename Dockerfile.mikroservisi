@@ -1,0 +1,12 @@
+FROM eclipse-temurin:21-jre
+
+COPY ./asaric_vjezba_08_dz_3_mikroservisi/target /usr/mikroservisi/
+COPY ./asaric_vjezba_08_dz_3_mikroservisi/docker-entrypoint.mikroservisi.sh /docker-entrypoint.sh
+COPY ./asaric_vjezba_08_dz_3_mikroservisi/target/asaric_vjezba_08_dz_3_mikroservisi.jar /usr/mikroservisi/
+
+WORKDIR /usr/mikroservisi
+RUN chmod -R 777 /docker-entrypoint.sh
+
+EXPOSE 7070
+ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["start"]

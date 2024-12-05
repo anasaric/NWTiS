@@ -1,0 +1,10 @@
+FROM eclipse-temurin:21-jre
+
+COPY ./target /usr/app/
+COPY ./docker-entrypoint.servisi.sh /docker-entrypoint.sh
+WORKDIR /usr/app
+RUN chmod -R 777 /docker-entrypoint.sh
+
+EXPOSE 9080
+ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["start"]

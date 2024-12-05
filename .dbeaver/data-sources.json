@@ -1,0 +1,85 @@
+{
+	"folders": {},
+	"connections": {
+		"hsqldb_server-18f724bffe6-124145402c02ea43": {
+			"provider": "generic",
+			"driver": "hsqldb_server",
+			"name": "HSQLDB-nwtis_4-SA",
+			"save-password": true,
+			"configuration": {
+				"host": "localhost",
+				"port": "9001",
+				"database": "nwtis_4",
+				"url": "jdbc:hsqldb:hsql://localhost:9001/nwtis_4",
+				"configurationType": "MANUAL",
+				"type": "dev",
+				"closeIdleConnection": true,
+				"auth-model": "native"
+			}
+		},
+		"hsqldb_server-18f7292ea98-7abd3431295f94a7": {
+			"provider": "generic",
+			"driver": "hsqldb_server",
+			"name": "HSQLDB-nwtis_4-nwtis_4",
+			"save-password": true,
+			"configuration": {
+				"host": "localhost",
+				"port": "9001",
+				"database": "nwtis_4",
+				"url": "jdbc:hsqldb:hsql://localhost:9001/nwtis_4",
+				"configurationType": "MANUAL",
+				"type": "dev",
+				"closeIdleConnection": true,
+				"auth-model": "native"
+			}
+		},
+		"h2_server-1901eff89df-1e7a469ac406b0d9": {
+			"provider": "h2",
+			"driver": "h2_server",
+			"name": "nwtis_4",
+			"save-password": true,
+			"configuration": {
+				"host": "20.24.5.4",
+				"port": "9092",
+				"database": "nwtis_4",
+				"url": "jdbc:h2:tcp://20.24.5.4:9092/nwtis_4",
+				"configurationType": "MANUAL",
+				"type": "dev",
+				"closeIdleConnection": true,
+				"auth-model": "native"
+			}
+		},
+		"h2_server-1902e649be5-1263b927b3c4d4e6": {
+			"provider": "h2",
+			"driver": "h2_server",
+			"name": "nwtis_4_zadaca",
+			"save-password": true,
+			"configuration": {
+				"host": "20.24.5.4",
+				"port": "9092",
+				"database": "nwtis_4",
+				"url": "jdbc:h2:tcp://20.24.5.4:9092/nwtis_4",
+				"configurationType": "MANUAL",
+				"type": "dev",
+				"closeIdleConnection": true,
+				"auth-model": "native"
+			}
+		}
+	},
+	"connection-types": {
+		"dev": {
+			"name": "Development",
+			"color": "255,255,255",
+			"description": "Regular development database",
+			"auto-commit": true,
+			"confirm-execute": false,
+			"confirm-data-change": false,
+			"smart-commit": false,
+			"smart-commit-recover": false,
+			"auto-close-transactions": true,
+			"close-transactions-period": 1800,
+			"auto-close-connections": true,
+			"close-connections-period": 14400
+		}
+	}
+}

@@ -1,0 +1,105 @@
+brisanje ako već postoji HSQL I H2
+
+docker container stop nwtis_hsql_dz_2c
+docker container stop nwtis_h2_dz_2c
+
+docker container remove nwtis_hsql_dz_2c
+docker container remove nwtis_h2_dz_2c
+
+docker image remove nwtis_hsql_dz_2i
+docker image remove nwtis_h2_dz_2i
+
+docker volume remove nwtis_hsql_dz_2v
+docker volume remove nwtis_h2_dz_2v
+
+
+______
+
+Kreiranje HSQL dockera
+
+docker volume create nwtis_hsql_dz_2v
+docker volume inspect nwtis_hsql_dz_2v
+sudo ls -al /var/lib/docker/volumes/nwtis_hsql_dz_2v/_data
+
+sudo cp -R /opt/hsqldb-2.7.2/hsqldb/data/* /var/lib/docker/volumes/nwtis_hsql_dz_2v/_data/
+
+cd asaric/asaric_vjezba_07_dz_2/
+docker build -t nwtis_hsql_dz_2i -f Dockerfile.hsql .
+
+docker run -it -d --network=nwtis_dz_2n --ip 20.24.5.3 \
+-p 9001:9001 \
+--name=nwtis_hsql_dz_2c --hostname=nwtis_hsql_dz_2c \
+--mount source=nwtis_hsql_dz_2v,target=/opt/data \
+nwtis_hsql_dz_2i:latest
+
+
+----------
+Kreiranje H2 dockera
+
+docker volume create nwtis_h2_dz_2v
+docker volume inspect nwtis_h2_dz_2v
+sudo ls -al /var/lib/docker/volumes/nwtis_h2_dz_2v/_data
+
+
+sudo cp -R /opt/database/* /var/lib/docker/volumes/nwtis_h2_dz_2v/_data/
+docker build -t nwtis_h2_dz_2i -f Dockerfile.h2 .
+
+docker run -it -d --network=nwtis_dz_2n --ip 20.24.5.4 \
+-p 9092:9092 \
+--name=nwtis_h2_dz_2c --hostname=nwtis_h2_dz_2c \
+--mount source=nwtis_h2_dz_2v,target=/opt/database \
+nwtis_h2_dz_2i:latest
+
+
+----------
+Kreiranje asaric_vjezba_07_dz_2_servisi
+
+docker volume create nwtis_servisi_dz_2v
+docker volume inspect nwtis_servisi_dz_2v
+
+docker volume create nwtis_servisi_dz_2c
+docker volume inspect nwtis_servisi_dz_2c
+
+docker volume remove nwtis_servisi_dz_2v
+docker volume remove nwtis_servisi_dz_2c
+
+docker image remove nwtis_servisi_dz_2i
+
+cd asaric/asaric_vjezba_07_dz_2/asaric_vjezba_07_dz_2_servisi
+docker build --no-cache -t nwtis_servisi_dz_2i -f DockerFile.servisi .   
+
+docker run --name nwtis_servisi_dz_2c --network=nwtis_dz_2n --ip 20.24.5.5 -p 9080:8080 --hostname=nwtis_servisi_dz_2c nwtis_servisi_dz_2i:latest
+
+
+----------
+Kreiranje asaric_vjezba_07_dz_2_app
+
+docker volume create nwtis_app_dz_2v
+docker volume inspect nwtis_app_dz_2v
+
+docker volume create nwtis_app_dz_2c
+docker volume inspect nwtis_app_dz_2c
+
+docker volume remove nwtis_app_dz_2v
+docker volume remove nwtis_app_dz_2c
+
+docker image remove nwtis_app_dz_2i
+
+cd asaric/asaric_vjezba_07_dz_2/asaric_vjezba_07_dz_2_app
+
+docker build --no-cache -t nwtis_app_dz_2i -f DockerFile.app .    
+
+docker run --name nwtis_app_dz_2c --network=nwtis_dz_2n --ip 20.24.5.2 -p 8082:8080 --hostname=nwtis_app_dz_2c nwtis_app_dz_2i:latest
+
+
+//pokrece se iz servisi projekta terminal
+java -jar target/asaric_vjezba_07_dz_2_servisi-1.0.0-jar-with-dependencies.jar
+
+
+
+//pokretanje payare
+cd /opt/payara6-web/glassfish/bin
+./startserv
+
+//redeploy klijenta
+mvn cargo:redeploy -P ServerEE-local
